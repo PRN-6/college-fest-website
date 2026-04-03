@@ -1,67 +1,70 @@
-import { useGLTF } from '@react-three/drei'
-import { useRef, useEffect } from 'react'
+import React, { useEffect , useRef } from 'react'
+import { useGLTF , useAnimations} from '@react-three/drei'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
 
-//Register the plugin
 gsap.registerPlugin(ScrollTrigger)
 
 const Model = () => {
-    const { scene } = useGLTF('/models/laptop.glb')
-    const modelRef = useRef()
-    
-    useEffect(() => {
-        // Set initial position to CENTER
-        scene.rotation.set(0.3, -0.8, 0.1)
-        scene.position.set(0, 0, 0)  // ← Centered position
+  const group = useRef()
+  const { scene , animations} = useGLTF('/models/laptop-proper.glb')
+  const { actions } = useAnimations(animations, scene)
+
+
+  // play the animation when the component mounts
+  useEffect(() => {
+    const action = actions[Object.keys(actions)[0]]
+    action.play()
+    action.paused = true
+
+    // set the initial rotation
+    gsap.set(group.current.rotation, {
+      x: Math.PI / 10,
+      y: Math.PI / 6,
+    })
+
+    // gsap.to(group.current.rotation, {
+    //   y: Math.PI * 2,
+    //   scrollTrigger: {
+    //     trigger: group.current,
+    //     start: "top top",
+    //     end: "bottom top",
+    //     scrub: 1,
+    //   }
+    // })
+
+    // scroll trigger to control the animation
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "top top",
+      end: "bottom center",
+      scrub: 1,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        action.time = progress * action.getClip().duration;
+
+
+        // rotate the model
+        group.current.rotation.x = gsap.utils.interpolate(Math.PI / 10, 0, progress);
+        group.current.rotation.y = gsap.utils.interpolate(Math.PI / 6, 0, progress);
+        group.current.rotation.z = gsap.utils.interpolate(0, 0, progress);
         
-        // Enable the GSAP animations
-        gsap.to(scene.rotation, {
-            x: Math.PI / 6,
-            y: Math.PI * 1.5,
-            z: Math.PI / 12,
-            scrollTrigger: {
-                trigger: document.body,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1,
-            }
-        })
-        
-        gsap.to(scene.scale, {
-            x: 3,
-            y: 3,
-            z: 3,
-            scrollTrigger: {
-                trigger: document.body,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1,
-            }
-        })
-        
-        gsap.to(scene.position, {
-            x: -1,
-            y: 0.5,
-            z: 1,
-            scrollTrigger: {
-                trigger: document.body,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1,
-            }
-        })
-        
-    }, [scene])
-    
-    return (
-        <primitive 
-            ref={modelRef}
-            object={scene}
-            scale={6}
-            // Remove position and scale here - let useEffect control it
-        />
-    )
+        group.current.position.x = gsap.utils.interpolate(0, 0, progress);
+        group.current.position.y = gsap.utils.interpolate(0, 0, progress);
+        group.current.position.z = gsap.utils.interpolate(0, 2 - (progress * 2), progress);
+
+      }
+    })
+  },[actions])
+
+
+  return (
+    <primitive 
+        ref={group}
+        object={scene}
+        scale={0.5}
+    />
+  )
 }
 
 export default Model
