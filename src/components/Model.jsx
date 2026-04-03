@@ -23,15 +23,6 @@ const Model = () => {
       y: Math.PI / 6,
     })
 
-    // gsap.to(group.current.rotation, {
-    //   y: Math.PI * 2,
-    //   scrollTrigger: {
-    //     trigger: group.current,
-    //     start: "top top",
-    //     end: "bottom top",
-    //     scrub: 1,
-    //   }
-    // })
 
     // scroll trigger to control the animation
     ScrollTrigger.create({
