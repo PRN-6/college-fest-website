@@ -1,21 +1,27 @@
-import { Canvas } from '@react-three/fiber'
-import Model from './components/Model'
+import React from 'react'
 import { OrbitControls } from '@react-three/drei'
+import Model from './components/Model'
+import Scene from './components/Scene'
+import Background from './components/Background'
+import Header from './components/Header'
+
+
 
 const App = () => {
+
   return (
-    <div className='relative'>
-      <div className='fixed w-screen h-screen overflow-hidden'>
-        <Canvas camera={{ position: [0,0,5]}}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[5,10,5]} />
-          
-          <Model />
-          <OrbitControls />
-        </Canvas>
+    <div className='w-full h-[200vh] relative'>
+      <Background /> 
+      <Header/>  
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-screen">
+        <Scene/>
       </div>
+
     </div>
+
   )
+
+
 }
 
 export default App
