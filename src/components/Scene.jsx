@@ -6,7 +6,7 @@ const Scene = () => {
     <Canvas>
       <ambientLight intensity={0.5}/>
       <directionalLight position={[10,10,5]} intensity={1}/>
-      <Model className="sm:w-[50vw] sm:h-[50vh]"/>
+      <Model/>
     </Canvas>
   )
 }
