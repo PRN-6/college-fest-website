@@ -2,16 +2,16 @@ import React, { useEffect , useRef } from 'react'
 import { useGLTF , useAnimations} from '@react-three/drei'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
-import { useThree } from '@react-three/fiber'
+import { useThree, useFrame } from '@react-three/fiber'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const Model = () => {
   const group = useRef()
-  const timelineRef = useRef()
   const { scene , animations} = useGLTF('/models/laptop-proper.glb')
   const { actions } = useAnimations(animations, scene)
   const { camera } = useThree()
+  const scrollStarted = useRef(false)
 
   useEffect(() => {
     if (!actions || Object.keys(actions).length === 0) return
@@ -34,6 +34,12 @@ const Model = () => {
         start: "top top",
         end: "25% center",
         scrub: 2,
+        onEnter: () => {
+          scrollStarted.current = true
+        },
+        onLeaveBack: () => {
+          scrollStarted.current = false
+        },
         onUpdate: (self) => {
           const progress = self.progress;
           action.time = progress * action.getClip().duration;
@@ -87,6 +93,17 @@ const Model = () => {
     }
 
   }, [actions, camera])
+
+  // Floating animation
+  useFrame((state) => {
+    if (group.current) {
+      // Only float until user starts scrolling
+      if (!scrollStarted.current) {
+        // Gentle floating motion
+        group.current.position.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.2
+      }
+    }
+  })
 
   return (
     <primitive 
