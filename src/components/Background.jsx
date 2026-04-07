@@ -28,6 +28,7 @@ const Background = () => {
       backgroundElement.style.width = '100vw'
       backgroundElement.style.height = '100vh'
       backgroundElement.style.zIndex = '-1'
+      backgroundElement.style.filter = 'blur(0.5px)'
       
       const animate = () => {
         const currentTime = Date.now()
