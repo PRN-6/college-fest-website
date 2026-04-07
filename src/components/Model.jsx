@@ -8,6 +8,13 @@ import useIsMobile from '../hooks/useIsMobile'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+  || window.innerWidth < 768
+
+// Mobile performance optimizations
+const MOBILE_SCRUB = isMobile ? 2 : 3
+const THROTTLE_MS = isMobile ? 16 : 8 // 60fps vs 120fps
+
 const Model = () => {
     const group = useRef()
     const { scene, animations } = useGLTF('/models/laptop-proper.glb')
