@@ -94,7 +94,7 @@ const Background = () => {
 
         const onTick = () => {
             if (!contentRef.current) return
-            
+
             if (!isMobile) {
                 // High-performance rotation only for desktop
                 const elapsed = gsap.ticker.time;

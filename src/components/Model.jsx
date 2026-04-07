@@ -8,13 +8,6 @@ import useIsMobile from '../hooks/useIsMobile'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
-  || window.innerWidth < 768
-
-// Mobile performance optimizations
-const MOBILE_SCRUB = isMobile ? 2 : 3
-const THROTTLE_MS = isMobile ? 16 : 8 // 60fps vs 120fps
-
 const Model = () => {
     const group = useRef()
     const { scene, animations } = useGLTF('/models/laptop-proper.glb')
@@ -152,7 +145,7 @@ const Model = () => {
             // --- MOBILE VERSION (OPTIMIZED) ---
             // Use a single Timeline for better performance on mobile
             gsap.set(group.current.rotation, { x: Math.PI / 10, y: Math.PI / 6 })
-            
+
             const mainTl = gsap.timeline({
                 scrollTrigger: {
                     id: 'mobile-model-trigger',
@@ -168,17 +161,17 @@ const Model = () => {
 
             // 0% -> 15% (Phase 1)
             mainTl.to(group.current.rotation, { x: 0, y: 0, duration: 0.15, ease: 'none' }, 0)
-                   .to(group.current.position, { y: -1, duration: 0.15, ease: 'none' }, 0)
-                   .to(action, { time: action.getClip().duration, duration: 0.15, ease: 'none' }, 0)
+                .to(group.current.position, { y: -1, duration: 0.15, ease: 'none' }, 0)
+                .to(action, { time: action.getClip().duration, duration: 0.15, ease: 'none' }, 0)
 
             // 15% -> 30% (Phase 2)
             mainTl.to(camera.position, { z: -7, duration: 0.15, ease: 'none' }, 0.15)
-                   .to(group.current.rotation, { x: Math.PI / 3, y: Math.PI / 4, z: Math.PI / 10, duration: 0.15, ease: 'none' }, 0.15)
-                   .to(group.current.position, { x: 2, duration: 0.15, ease: 'none' }, 0.15)
+                .to(group.current.rotation, { x: Math.PI / 3, y: Math.PI / 4, z: Math.PI / 10, duration: 0.15, ease: 'none' }, 0.15)
+                .to(group.current.position, { x: 2, duration: 0.15, ease: 'none' }, 0.15)
 
             // 30% -> 85% (Phase 3 & 4)
             mainTl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.55, ease: 'power1.in' }, 0.30)
-                   .set(group.current, { visible: false }, 0.85) // Nuclear visibility cleanup
+                .set(group.current, { visible: false }, 0.85) // Nuclear visibility cleanup
         }
 
         return () => {
@@ -207,4 +200,3 @@ const Model = () => {
 }
 
 export default Model
-  
