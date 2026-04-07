@@ -2,9 +2,16 @@ import React, { useEffect, useRef } from 'react'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useThree, useFrame, invalidate } from '@react-three/fiber'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+  || window.innerWidth < 768
+
+// Mobile performance optimizations
+const MOBILE_SCRUB = isMobile ? 2 : 3
+const THROTTLE_MS = isMobile ? 16 : 8 // 60fps vs 120fps
 
 const Model = () => {
     const group = useRef()
@@ -157,4 +164,6 @@ const Model = () => {
     )
 }
 
-export default Model  
+useGLTF.preload('/models/laptop-proper.glb')
+
+export default Model

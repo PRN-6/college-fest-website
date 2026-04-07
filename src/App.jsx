@@ -5,6 +5,7 @@ import Timeline from './components/Timeline'
 import Events from './components/Events'
 import Footer from './components/Footer'
 import FooterNav from './components/FooterNav'
+import FPSCounter from './components/FPSCounter'
 import './styles/hide-scrollbar.css'
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
       
       <Footer />
       <FooterNav />
+      <FPSCounter position="top-right" />
     </div>
   )
 }
