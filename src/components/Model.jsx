@@ -76,9 +76,9 @@ const Model = () => {
     triggers.push(
       ScrollTrigger.create({
         trigger: document.body,
-        start: '25% center',
-        end: '40% center',
-        scrub: MOBILE_SCRUB,
+        start: "25% center",
+        end: "40% center", 
+        scrub: 2,
         onUpdate: (self) => {
           const now = performance.now()
           if (isMobile && now - lastUpdateScroll2 < THROTTLE_MS) return
@@ -138,5 +138,7 @@ const Model = () => {
     />
   )
 }
+
+useGLTF.preload('/models/laptop-proper.glb')
 
 export default Model

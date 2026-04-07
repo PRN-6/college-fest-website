@@ -27,9 +27,7 @@ const FooterNav = () => {
               isExpanded ? 'animate-bounce' : 'animate-pulse'
             }`}
           >
-            <span className={`text-white text-xs transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>
-              {isExpanded ? '▼' : '▲'}
-            </span>
+            <span className={`text-white text-xs transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}>▲</span>
           </div>
           
           {/* Menu Items - Only show when expanded */}
