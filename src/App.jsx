@@ -7,6 +7,10 @@ import Footer from './components/Footer'
 import FooterNav from './components/FooterNav'
 import './styles/hide-scrollbar.css'
 
+import gsap from 'gsap'
+
+gsap.config({ force3D: true, autoSleep: 60 })
+
 const App = () => {
 
   return (
