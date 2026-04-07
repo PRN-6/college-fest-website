@@ -1,12 +1,20 @@
 import { Canvas } from '@react-three/fiber'
 import Model from './Model'
+import useIsMobile from '../hooks/useIsMobile'
 
 const Scene = () => {
+  const isMobile = useIsMobile()
+
   return (
     <Canvas 
-      shadows 
-      dpr={[1, 2]} 
-      gl={{ antialias: true, powerPreference: 'high-performance' }}
+      shadows={!isMobile} 
+      dpr={isMobile ? [1, 1.5] : [1, 2]} 
+      gl={{ 
+        antialias: !isMobile, 
+        powerPreference: 'high-performance',
+        stencil: false,
+        depth: true
+      }}
       camera={{ fov: 45 }}
     >
       <ambientLight intensity={0.5}/>

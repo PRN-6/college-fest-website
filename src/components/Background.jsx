@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
+import useIsMobile from '../hooks/useIsMobile'
 
 const Background = () => {
   const containerRef = useRef()
@@ -8,6 +9,7 @@ const Background = () => {
   const theme2Ref = useRef()
   const theme3Ref = useRef()
   const startTimeRef = useRef(Date.now())
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     // 1. Theme 1 Animations
@@ -47,6 +49,8 @@ const Background = () => {
       const currentTime = Date.now()
       const elapsedTime = (currentTime - startTimeRef.current) / 1000
 
+      // Only read computed style if not on mobile or use a debounced approach
+      // For mobile, we can slightly simplify or use a more efficient way to get themes
       const theme2Progress = parseFloat(getComputedStyle(document.body).getPropertyValue('--bg-theme-2')) || 0
       const theme3Progress = parseFloat(getComputedStyle(document.body).getPropertyValue('--bg-theme-3')) || 0
 
@@ -62,21 +66,27 @@ const Background = () => {
         containerRef.current.style.backgroundColor = bgColor
       }
 
-      // Parallax & Rotation (Optimized for Mobile)
-      const isMobile = window.innerWidth < 1024
-      const rotationSpeed = isMobile ? 0.5 : 1.5
-      const totalRotation = (elapsedTime * rotationSpeed) + (currentScrollY * 0.05)
-      const scale = isMobile ? 1.1 : 1.2 + (currentScrollY * 0.0005)
-
+      // Parallax & Rotation
       if (contentRef.current) {
-        contentRef.current.style.transform = `rotate(${totalRotation}deg) scale(${scale})`
+        if (!isMobile) {
+          // Full fidelity for Desktop
+          const rotationSpeed = 1.5
+          const totalRotation = (elapsedTime * rotationSpeed) + (currentScrollY * 0.05)
+          const scale = 1.2 + (currentScrollY * 0.0005)
+          contentRef.current.style.transform = `rotate(${totalRotation}deg) scale(${scale})`
+        } else {
+          // Optimized for Mobile: Lower rotation speed and fixed scale to avoid constant layout shifts
+          const rotationSpeed = 0.4 
+          const totalRotation = (elapsedTime * rotationSpeed) + (currentScrollY * 0.02)
+          contentRef.current.style.transform = `rotate(${totalRotation}deg) scale(1.1)`
+        }
       }
 
       rafId = requestAnimationFrame(animate)
     }
     animate()
     return () => { if (rafId) cancelAnimationFrame(rafId) }
-  }, [])
+  }, [isMobile])
 
   return (
     <div ref={containerRef} className="fixed inset-0 w-full h-screen overflow-hidden -z-10 transition-colors duration-700 bg-[#FF0072]">
@@ -97,7 +107,7 @@ const Background = () => {
         <div ref={theme2Ref} className="absolute inset-0 w-full h-full flex items-center justify-center opacity-0 transition-opacity duration-500">
           <div className="absolute inset-0 bg-white"></div>
           <div className="absolute inset-0 opacity-[0.10] flex flex-wrap gap-x-20 gap-y-10 rotate-[-15deg] scale-150">
-            {[...Array(30)].map((_, i) => <div key={i} className="text-4xl font-black">INOVEX CODE THE FUTURE</div>)}
+            {[...Array(isMobile ? 12 : 30)].map((_, i) => <div key={i} className="text-4xl font-black">INOVEX CODE THE FUTURE</div>)}
           </div>
           <div className="absolute bottom-[20%] left-[10%] text-black font-black text-[10vw]">INOVEX</div>
           <div className="absolute top-[20%] right-[10%] text-black font-black text-[8vw] text-right">CODE THE <br /> FUTURE</div>
@@ -123,25 +133,27 @@ const Background = () => {
           </div>
 
           {/* Animated Floating Panels */}
-          <div className="absolute top-[15%] right-[25%] w-64 h-80 bg-zinc-900 border border-white/20 rounded-lg overflow-hidden shadow-2xl">
+          <div className={`absolute top-[15%] right-[25%] ${isMobile ? 'w-32 h-40' : 'w-64 h-80'} bg-zinc-900 border border-white/20 rounded-lg overflow-hidden shadow-2xl`}>
             <div className="w-full h-full opacity-20 animate-pulse"
               style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")` }}></div>
             <div className="absolute inset-0 flex items-center justify-center text-white/40 font-mono text-xs">NO_SIGNAL</div>
           </div>
 
-          <div className="absolute bottom-[10%] left-[20%] w-56 h-56 rounded-full border-2 border-cyan-500/30 flex items-center justify-center">
-            <div className="w-40 h-40 rounded-full border border-pink-500/40 animate-spin transition-all duration-[3s]"
-              style={{ background: 'conic-gradient(from 0deg, transparent, #ff00ff22, transparent)' }}></div>
-          </div>
+          {!isMobile && (
+            <div className="absolute bottom-[10%] left-[20%] w-56 h-56 rounded-full border-2 border-cyan-500/30 flex items-center justify-center">
+              <div className="w-40 h-40 rounded-full border border-pink-500/40 animate-spin transition-all duration-[3s]"
+                style={{ background: 'conic-gradient(from 0deg, transparent, #ff00ff22, transparent)' }}></div>
+            </div>
+          )}
 
           {/* Neon Symbols */}
           <div className="neon-symbol absolute top-[25%] left-[25%] text-red-500 text-6xl drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]">▲</div>
-          <div className="neon-symbol absolute bottom-[30%] right-[30%] text-purple-500 text-5xl border-2 border-purple-500 w-12 h-12 rotate-45 opacity-60"></div>
+          {!isMobile && <div className="neon-symbol absolute bottom-[30%] right-[30%] text-purple-500 text-5xl border-2 border-purple-500 w-12 h-12 rotate-45 opacity-60"></div>}
           <div className="neon-symbol absolute top-[40%] right-[15%] text-cyan-400 text-7xl opacity-40">○</div>
 
-          {/* Vertical Wires */}
+          {/* Vertical Wires - Simplified for Mobile */}
           <div className="absolute inset-0 flex justify-around opacity-10">
-            {[...Array(12)].map((_, i) => <div key={i} className="w-px h-full bg-white"></div>)}
+            {[...Array(isMobile ? 6 : 12)].map((_, i) => <div key={i} className="w-px h-full bg-white"></div>)}
           </div>
         </div>
 
