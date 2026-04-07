@@ -45,7 +45,7 @@ const FooterNav = () => {
             >
               <span>{item.icon}</span>
             </div>
-          ))}
+          </div>
         </div>
 
         {/* Mobile View: Expandable Menu Toggle */}
@@ -83,7 +83,7 @@ const FooterNav = () => {
           </div>
         )}
       </div>
-    </div>
+    </>
   )
 }
 
