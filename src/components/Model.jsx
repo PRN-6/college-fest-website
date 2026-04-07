@@ -114,4 +114,6 @@ const Model = () => {
   )
 }
 
-export default Model  
+useGLTF.preload('/models/laptop-proper.glb')
+
+export default Model

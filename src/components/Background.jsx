@@ -1,18 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 const Background = () => {
-  const [scrollY, setScrollY] = useState(0)
   const animationRef = useRef()
   const startTimeRef = useRef(Date.now())
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY)
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     const backgroundElement = document.getElementById('background-image')
@@ -31,6 +21,7 @@ const Background = () => {
       backgroundElement.style.filter = 'blur(0.5px)'
       
       const animate = () => {
+        const currentScrollY = window.scrollY
         const currentTime = Date.now()
         const elapsedTime = (currentTime - startTimeRef.current) / 1000 // Convert to seconds
         
@@ -38,11 +29,11 @@ const Background = () => {
         const idleRotation = elapsedTime * 2
         
         // Additional rotation when scrolling
-        const scrollRotation = scrollY * 0.5
+        const scrollRotation = currentScrollY * 0.5
         
         // Initial scale
         const initialScale = 2.5
-        const scale = initialScale + scrollY * 0.002
+        const scale = initialScale + currentScrollY * 0.002
         
         // Combine idle spinning with scroll rotation
         const totalRotation = idleRotation + scrollRotation
@@ -59,7 +50,7 @@ const Background = () => {
         }
       }
     }
-  }, [scrollY])
+  }, []) // Empty dependency array to prevent recreating loop
 
   return (
     <div id="background-image"></div>
