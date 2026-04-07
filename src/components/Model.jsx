@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import * as THREE from 'three'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import gsap from 'gsap'
@@ -11,7 +12,7 @@ const Model = () => {
     const group = useRef()
     const { scene, animations } = useGLTF('/models/laptop-proper.glb')
     const { actions } = useAnimations(animations, scene)
-    const { camera } = useThree()
+    const { camera, invalidate } = useThree()
     const scrollStarted = useRef(false)
     const isMobile = useIsMobile()
 
@@ -21,6 +22,25 @@ const Model = () => {
         const action = actions[Object.keys(actions)[0]]
         action.play()
         action.paused = true
+
+        // Optimize model for mobile
+        scene.traverse((child) => {
+            if (child.isMesh) {
+                child.frustumCulled = true
+                if (isMobile) {
+                    child.castShadow = false
+                    child.receiveShadow = false
+                    // Ultra-Core texture optimization
+                    if (child.material.map) {
+                        child.material.map.minFilter = THREE.LinearFilter
+                        child.material.map.generateMipmaps = false
+                    }
+                    if (child.material) {
+                        child.material.precision = 'lowp'
+                    }
+                }
+            }
+        })
 
         const triggers = []
 
@@ -134,33 +154,24 @@ const Model = () => {
                     end: "bottom bottom",
                     scrub: 0.5, // Faster response on mobile
                     onEnter: () => { scrollStarted.current = true },
-                    onLeaveBack: () => { scrollStarted.current = false }
+                    onLeaveBack: () => { scrollStarted.current = false },
+                    onUpdate: () => { if (isMobile) invalidate() } // Force render on scroll
                 }
             })
 
-            // Sequence out the mobile animations using the timeline percentages
             // 0% -> 15% (Phase 1)
             mainTl.to(group.current.rotation, { x: 0, y: 0, duration: 0.15, ease: 'none' }, 0)
                    .to(group.current.position, { y: -1, duration: 0.15, ease: 'none' }, 0)
                    .to(action, { time: action.getClip().duration, duration: 0.15, ease: 'none' }, 0)
-                   .to({}, { onUpdate: () => document.body.style.setProperty('--bg-theme-2', mainTl.progress() / 0.15), duration: 0.15 }, 0)
 
             // 15% -> 30% (Phase 2)
             mainTl.to(camera.position, { z: -7, duration: 0.15, ease: 'none' }, 0.15)
                    .to(group.current.rotation, { x: Math.PI / 3, y: Math.PI / 4, z: Math.PI / 10, duration: 0.15, ease: 'none' }, 0.15)
                    .to(group.current.position, { x: 2, duration: 0.15, ease: 'none' }, 0.15)
-                   .to({}, { onUpdate: () => {
-                       document.body.style.setProperty('--bg-theme-2', 1)
-                       const p3 = (mainTl.progress() - 0.15) / 0.15
-                       if (p3 >= 0 && p3 <= 1) document.body.style.setProperty('--bg-theme-3', p3)
-                   }, duration: 0.15 }, 0.15)
 
             // 30% -> 85% (Phase 3 & 4)
             mainTl.to(group.current.scale, { x: 0, y: 0, z: 0, duration: 0.55, ease: 'power1.in' }, 0.30)
-                   .to({}, { onUpdate: () => {
-                       document.body.style.setProperty('--bg-theme-2', 1)
-                       document.body.style.setProperty('--bg-theme-3', 1)
-                   }, duration: 0.70 }, 0.30)
+                   .set(group.current, { visible: false }, 0.85) // Nuclear visibility cleanup
         }
 
         return () => {
@@ -172,7 +183,7 @@ const Model = () => {
 
     // Floating animation
     useFrame((state) => {
-        if (group.current) {
+        if (group.current && !isMobile) {
             if (!scrollStarted.current) {
                 group.current.position.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.2
             }
