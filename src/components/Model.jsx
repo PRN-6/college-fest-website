@@ -33,7 +33,7 @@ const Model = () => {
         trigger: document.body,
         start: "top top",
         end: "25% center",
-        scrub: 2,
+        scrub: 3,
         onEnter: () => {
           scrollStarted.current = true
         },
@@ -79,7 +79,7 @@ const Model = () => {
         trigger: document.body,
         start: "25% center",
         end: "35% center",
-        scrub: 1,
+        scrub: 3,
         onUpdate: (self) => {
           const progress = self.progress;
           const timeline = document.querySelector('.timeline-container')
@@ -94,13 +94,18 @@ const Model = () => {
 
   }, [actions, camera])
 
-  // Floating animation
+  // Optimized floating animation with reduced frequency
+  const lastTimeRef = useRef(0)
   useFrame((state) => {
     if (group.current) {
       // Only float until user starts scrolling
       if (!scrollStarted.current) {
-        // Gentle floating motion
-        group.current.position.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.2
+        // Throttle animation to every 2 frames for better performance
+        if (state.clock.elapsedTime - lastTimeRef.current > 0.032) { // ~30fps
+          // Gentle floating motion
+          group.current.position.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.2
+          lastTimeRef.current = state.clock.elapsedTime
+        }
       }
     }
   })
@@ -114,4 +119,4 @@ const Model = () => {
   )
 }
 
-export default Model  
+export default Model

@@ -52,7 +52,7 @@ const Timeline = () => {
       trigger: document.body,
       start: "32% center",
       end: "60% center",
-      scrub: 2,
+      scrub: 3,
       onUpdate: (self) => {
         const progress = self.progress;
 

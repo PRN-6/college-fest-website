@@ -4,13 +4,20 @@ const Background = () => {
   const [scrollY, setScrollY] = useState(0)
   const animationRef = useRef()
   const startTimeRef = useRef(Date.now())
+  const tickingRef = useRef(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY)
+      if (!tickingRef.current) {
+        requestAnimationFrame(() => {
+          setScrollY(window.scrollY)
+          tickingRef.current = false
+        })
+        tickingRef.current = true
+      }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -29,7 +36,9 @@ const Background = () => {
       backgroundElement.style.height = '100vh'
       backgroundElement.style.zIndex = '-1'
       backgroundElement.style.filter = 'blur(0.5px)'
+      backgroundElement.style.willChange = 'transform' // Optimize for animations
       
+      let lastScrollY = 0
       const animate = () => {
         const currentTime = Date.now()
         const elapsedTime = (currentTime - startTimeRef.current) / 1000 // Convert to seconds
