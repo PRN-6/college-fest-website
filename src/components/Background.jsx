@@ -1,16 +1,36 @@
-import React, { useEffect, useState, useRef } from 'react'
+// Background.jsx
+import React, { useEffect, useRef } from 'react'
 
 const Background = () => {
-  const [scrollY, setScrollY] = useState(0)
-  const animationRef = useRef()
+  const scrollYRef = useRef(0)       // no re-renders on scroll
   const startTimeRef = useRef(Date.now())
+  const animationRef = useRef()
   const tickingRef = useRef(false)
 
   useEffect(() => {
+    const el = document.getElementById('background-image')
+    if (!el) return
+
+    // Set all static styles once, not on every scroll
+    Object.assign(el.style, {
+      backgroundImage: "url('/images/bg.jpg')",
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      position: 'fixed',
+      top: '0',
+      left: '0',
+      width: '100vw',
+      height: '100vh',
+      zIndex: '-1',
+      filter: 'blur(0.5px)',
+      willChange: 'transform',
+    })
+
     const handleScroll = () => {
       if (!tickingRef.current) {
         requestAnimationFrame(() => {
-          setScrollY(window.scrollY)
+          scrollYRef.current = window.scrollY  // ref, not state — no re-render
           tickingRef.current = false
         })
         tickingRef.current = true
@@ -18,61 +38,28 @@ const Background = () => {
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
-  useEffect(() => {
-    const backgroundElement = document.getElementById('background-image')
-    if (backgroundElement) {
-      // Use your image from the public folder
-      backgroundElement.style.backgroundImage = "url('/images/bg.jpg')"
-      backgroundElement.style.backgroundSize = 'cover'
-      backgroundElement.style.backgroundPosition = 'center'
-      backgroundElement.style.backgroundRepeat = 'no-repeat'
-      backgroundElement.style.position = 'fixed'
-      backgroundElement.style.top = '0'
-      backgroundElement.style.left = '0'
-      backgroundElement.style.width = '100vw'
-      backgroundElement.style.height = '100vh'
-      backgroundElement.style.zIndex = '-1'
-      backgroundElement.style.filter = 'blur(0.5px)'
-      backgroundElement.style.willChange = 'transform' // Optimize for animations
-      
-      let lastScrollY = 0
-      const animate = () => {
-        const currentTime = Date.now()
-        const elapsedTime = (currentTime - startTimeRef.current) / 1000 // Convert to seconds
-        
-        // Continuous spinning animation (2 degrees per second - faster)
-        const idleRotation = elapsedTime * 2
-        
-        // Additional rotation when scrolling
-        const scrollRotation = scrollY * 0.5
-        
-        // Initial scale
-        const initialScale = 2.5
-        const scale = initialScale + scrollY * 0.002
-        
-        // Combine idle spinning with scroll rotation
-        const totalRotation = idleRotation + scrollRotation
-        backgroundElement.style.transform = `rotate(${totalRotation}deg) scale(${scale})`
-        
-        animationRef.current = requestAnimationFrame(animate)
-      }
-      
-      animate()
-      
-      return () => {
-        if (animationRef.current) {
-          cancelAnimationFrame(animationRef.current)
-        }
-      }
+    // Single rAF loop — never restarted on scroll
+    const animate = () => {
+      const elapsed = (Date.now() - startTimeRef.current) / 1000
+      const sy = scrollYRef.current
+
+      const totalRotation = elapsed * 2 + sy * 0.5
+      const scale = 2.5 + sy * 0.002
+
+      el.style.transform = `rotate(${totalRotation}deg) scale(${scale})`
+      animationRef.current = requestAnimationFrame(animate)
     }
-  }, [scrollY])
 
-  return (
-    <div id="background-image"></div>
-  )
+    animate()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      cancelAnimationFrame(animationRef.current)
+    }
+  }, []) // empty deps — runs once, never restarts
+
+  return <div id="background-image" />
 }
 
 export default Background
