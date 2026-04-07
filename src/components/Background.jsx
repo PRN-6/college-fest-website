@@ -3,6 +3,8 @@ import React, { useEffect, useRef } from 'react'
 const Background = () => {
   const animationRef = useRef()
   const startTimeRef = useRef(Date.now())
+  const animationRef = useRef()
+  const tickingRef = useRef(false)
 
   useEffect(() => {
     const backgroundElement = document.getElementById('background-image')
@@ -52,9 +54,7 @@ const Background = () => {
     }
   }, []) // Empty dependency array to prevent recreating loop
 
-  return (
-    <div id="background-image"></div>
-  )
+  return <div id="background-image" />
 }
 
 export default Background
