@@ -18,7 +18,6 @@ const Background = () => {
         gsap.set([theme2Ref.current, theme3Ref.current], { opacity: 0 })
         gsap.set(theme1Ref.current, { opacity: 1 })
 
-        // 2. Continuous Background Animations (Blobs, Symbols)
         // Theme 1 Blobs
         const blobs = theme1Ref.current.querySelectorAll('.blob')
         blobs.forEach((blob, i) => {
@@ -26,6 +25,16 @@ const Background = () => {
                 x: 'random(-100, 100)', y: 'random(-100, 100)',
                 scale: 'random(0.8, 1.2)', duration: 5 + Math.random() * 5,
                 repeat: -1, yoyo: true, ease: 'sine.inOut', delay: i * 0.5
+            })
+        })
+
+        // Theme 1 XXX Symbols
+        const xxxSymbols = theme1Ref.current.querySelectorAll('.triple-x span')
+        xxxSymbols.forEach((x, i) => {
+            gsap.to(x, {
+                y: '+=15', rotation: 'random(-10, 10)',
+                duration: 2 + Math.random() * 2,
+                repeat: -1, yoyo: true, ease: 'sine.inOut', delay: i * 0.2
             })
         })
 
@@ -131,6 +140,44 @@ const Background = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-[#FF0072] to-[#7B2CBF]"></div>
                     <div className="blob absolute w-[40%] h-[40%] rounded-full blur-[100px] opacity-60 bg-[#FF1CF7] left-[15%] top-[20%]"></div>
                     <div className="blob absolute w-[35%] h-[35%] rounded-full blur-[120px] opacity-40 bg-[#00F5FF] right-[20%] bottom-[25%]"></div>
+                    
+                    {/* Stylized Triple X - Bottom Left */}
+                    <div className="triple-x absolute top-[70%] left-[28%] md:top-[72%] md:left-[28%] flex gap-1 md:gap-3 opacity-90">
+                        {['X', 'X', 'X'].map((x, i) => (
+                            <span key={i} className="text-5xl md:text-8xl font-black text-[#00F5FF] drop-shadow-[0_0_15px_rgba(0,245,255,0.6)] leading-none">
+                                {x}
+                            </span>
+                        ))}
+                    </div>
+
+                    {/* Stylized Triple X - Top Right */}
+                    <div className="triple-x absolute top-[25%] right-[25%] md:top-[20%] md:right-[28%] flex gap-1 md:gap-3 opacity-90">
+                        {['X', 'X', 'X'].map((x, i) => (
+                            <span key={i} className="text-5xl md:text-8xl font-black text-[#00F5FF] drop-shadow-[0_0_15px_rgba(0,245,255,0.6)] leading-none">
+                                {x}
+                            </span>
+                        ))}
+                    </div>
+
+                    {/* Dotted Grid - Top Right */}
+                    <div className="absolute top-[18%] right-[18%] w-32 h-32 opacity-40 pointer-events-none" 
+                        style={{ backgroundImage: 'radial-gradient(circle, white 2px, transparent 2px)', backgroundSize: '16px 16px' }}>
+                    </div>
+
+                    {/* Dotted Grid - Bottom Right */}
+                    <div className="absolute top-[75%] right-[15%] w-48 h-16 opacity-40 pointer-events-none" 
+                        style={{ backgroundImage: 'radial-gradient(circle, white 3px, transparent 3px)', backgroundSize: '20px 20px' }}>
+                    </div>
+
+                    {/* Dotted Grid - Mid Left */}
+                    <div className="absolute top-[50%] left-[15%] w-24 h-48 opacity-40 pointer-events-none" 
+                        style={{ backgroundImage: 'radial-gradient(circle, white 2.5px, transparent 2.5px)', backgroundSize: '18px 18px' }}>
+                    </div>
+
+                    {/* Diagonal Lines */}
+                    <div className="absolute top-[30%] left-[30%] w-[40%] h-1 bg-white opacity-60 rotate-45 transform origin-left rounded-full"></div>
+                    <div className="absolute top-[35%] left-[25%] w-[50%] h-1 bg-white opacity-30 rotate-45 transform origin-left rounded-full"></div>
+                    <div className="absolute top-[60%] right-[30%] w-[30%] h-1.5 bg-white opacity-80 rotate-45 transform origin-right rounded-full"></div>
                 </div>
 
                 {/* --- THEME 2: WHITE --- */}
