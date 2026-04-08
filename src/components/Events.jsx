@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -6,17 +7,29 @@ gsap.registerPlugin(ScrollTrigger)
 
 const Events = () => {
     const cardsRef = useRef([])
+    const navigate = useNavigate()
 
     const eventData = [
-        { title: 'UPDATING..', date: 'DEC 22', color: 'border-pink-500' },
-        { title: 'UPDATING..', date: 'DEC 23', color: 'border-cyan-400' },
-        { title: 'UPDATING..', date: 'DEC 24', color: 'border-purple-500' },
-        { title: 'UPDATING..', date: 'DEC 25', color: 'border-white' },
-        { title: 'UPDATING..', date: 'DEC 26', color: 'border-yellow-400' },
-        { title: 'UPDATING..', date: 'DEC 27', color: 'border-blue-500' },
-        { title: 'UPDATING..', date: 'DEC 28', color: 'border-lime-400' },
-        { title: 'UPDATING..', date: 'DEC 29', color: 'border-orange-500' },
-        { title: 'UPDATING..', date: 'DEC 30', color: 'border-red-500' },
+        { title: 'IT MANAGER', date: 'DEC 22', color: 'border-pink-500' },
+        { title: 'TREASURE HUNT', date: 'DEC 23', color: 'border-cyan-400' },
+        { title: 'SURPRISE EVENT', date: 'DEC 24', color: 'border-purple-500' },
+        { title: 'WEB DESIGNING', date: 'DEC 25', color: 'border-white' },
+        { title: 'HACKATHON', date: 'DEC 26', color: 'border-yellow-400' },
+        { title: 'REEL MAKING', date: 'DEC 27', color: 'border-blue-500' },
+        { title: 'GAMING', date: 'DEC 28', color: 'border-lime-400' },
+        { title: 'PRODUCT LAUNCH', date: 'DEC 29', color: 'border-orange-500' },
+        // { title: 'UPDATING..', date: 'DEC 30', color: 'border-red-500' },
+    ]
+
+    const description = [
+        { description: "Manage, optimize, and secure digital systems while solving real-world tech challenges. Step into the role of an IT leader." },
+        { description: "Follow clues, solve puzzles, and race against time to uncover the hidden treasure. Adventure meets intelligence." },
+        { description: "Expect the unexpected! A mystery-filled event packed with fun, excitement, and unforgettable moments." },
+        { description: "Design stunning and user-friendly websites. Showcase your creativity and front-end skills in this design challenge." },
+        { description: "Code. Build. Innovate. Turn your ideas into reality in an intense battle of creativity and problem-solving." },
+        { description: "Create engaging short videos that tell a story. Show your creativity, editing skills, and viral potential." },
+        { description: "Compete, strategize, and dominate the arena. Prove your skills in high-energy competitive gaming battles." },
+        { description: "Pitch and present innovative product ideas. Blend creativity, business strategy, and execution like a true entrepreneur." },
     ]
 
     useEffect(() => {
@@ -76,7 +89,11 @@ const Events = () => {
                         <div
                             key={i}
                             ref={el => cardsRef.current[i] = el}
-                            className={`backdrop-blur-none bg-zinc-900/90 md:backdrop-blur-xl md:bg-white/5 border-2 ${event.color} rounded-2xl p-6 md:p-8 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10 group cursor-pointer`}
+                            onClick={() => {
+                                if (event.title === 'IT MANAGER') navigate('/it-manager')
+                                if (event.title === 'TREASURE HUNT') navigate('/treasure-hunt')
+                            }}
+                            className={`backdrop-blur-none bg-zinc-900/90 md:backdrop-blur-xl md:bg-white/5 border-2 ${event.color} rounded-2xl p-6 md:p-8 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10 group ${(event.title === 'IT MANAGER' || event.title === 'TREASURE HUNT') ? 'cursor-pointer' : 'cursor-default'}`}
                         >
                             <div className="flex justify-between items-start mb-6">
                                 <span className="text-[10px] md:text-xs font-black tracking-[0.3em] text-white/30 group-hover:text-white/60 transition-colors uppercase">{event.date}</span>
@@ -86,7 +103,7 @@ const Events = () => {
                                 {event.title}
                             </h3>
                             <p className="text-white/40 text-xs md:text-sm leading-relaxed group-hover:text-white/60 transition-colors">
-                                A deep dive into the fusion of art and algorithms. Witness the next evolution of digital expression.
+                                {description[i].description}
                             </p>
                         </div>
                     ))}
