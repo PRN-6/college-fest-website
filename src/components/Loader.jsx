@@ -15,8 +15,8 @@ const Loader = ({ onFinished }) => {
                 if (loaderRef.current) {
                     gsap.to(loaderRef.current, {
                         opacity: 0,
-                        scale: 1.1,
-                        duration: 1.2,
+                        scale: isMobile ? 1 : 1.1, // Scaling with heavy filters causes mobile lag
+                        duration: isMobile ? 0.8 : 1.2, // Faster exit on mobile
                         ease: 'power3.inOut',
                         onComplete: () => {
                             setShow(false)
@@ -35,17 +35,18 @@ const Loader = ({ onFinished }) => {
         <div 
             ref={loaderRef}
             className="loader-container fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505] overflow-hidden"
+            style={{ willChange: 'opacity, transform' }}
         >
             {/* Background Texture & Gradients */}
             <div className="absolute inset-0 opacity-[0.15] pointer-events-none"
                 style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
             ></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-[#FF0072]/15 via-transparent to-[#00F5FF]/10 blur-[120px]"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#FF0072]/15 via-transparent to-[#00F5FF]/10 blur-[40px] md:blur-[120px]"></div>
 
             {/* Logo Content - Fully Responsive */}
             <div className="relative mb-12 md:mb-16 flex flex-col items-center px-4 w-full">
                 {/* 3D Extrusion Text Effect (Scaled for mobile) */}
-                <h1 className="text-[18vw] md:text-[15rem] lg:text-[18rem] font-black italic tracking-tighter text-white leading-none select-none text-center mix-blend-difference"
+                <h1 className="text-[18vw] md:text-[15rem] lg:text-[18rem] font-black italic tracking-tighter text-white leading-none select-none text-center"
                     style={{
                         textShadow: isMobile ? `
                             1px 1px 0px #000,
