@@ -15,8 +15,8 @@ const Loader = ({ onFinished }) => {
                 if (loaderRef.current) {
                     gsap.to(loaderRef.current, {
                         opacity: 0,
-                        scale: 1.1,
-                        duration: 1.2,
+                        scale: isMobile ? 1 : 1.1, // Scaling with heavy filters causes mobile lag
+                        duration: isMobile ? 0.8 : 1.2, // Faster exit on mobile
                         ease: 'power3.inOut',
                         onComplete: () => {
                             setShow(false)
@@ -35,6 +35,7 @@ const Loader = ({ onFinished }) => {
         <div 
             ref={loaderRef}
             className="loader-container fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505] overflow-hidden"
+            style={{ willChange: 'opacity, transform' }}
         >
             {/* Background Texture & Gradients */}
             <div className="absolute inset-0 opacity-[0.15] pointer-events-none"
