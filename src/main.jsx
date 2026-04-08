@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+import { BrowserRouter } from 'react-router-dom'
 
 // Silence THREE.Clock deprecation warning (triggered internally by @react-three/fiber in Three.js r183+)
 const originalWarn = console.warn;
@@ -12,6 +13,8 @@ console.warn = (...args) => {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </StrictMode>
 )

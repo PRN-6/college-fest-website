@@ -22,7 +22,7 @@ const Timeline = () => {
 
   // Countdown Timer
   useEffect(() => {
-    const targetDate = new Date('2026-12-31T23:59:59').getTime()
+    const targetDate = new Date('2026-05-15T23:59:59').getTime()
 
     const interval = setInterval(() => {
       const now = new Date().getTime()

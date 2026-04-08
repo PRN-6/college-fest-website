@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import ItManager from './pages/events/ItManager'
+import TreasureHunt from './pages/events/TreasureHunt'
 import Scene from './components/Scene'
 import Background from './components/Background'
 import Header from './components/Header'
@@ -13,7 +16,7 @@ import gsap from 'gsap'
 
 gsap.config({ force3D: true, autoSleep: 60 })
 
-const App = () => {
+const AppContent = () => {
     const [loaded, setLoaded] = useState(false)
 
     return (
@@ -42,4 +45,15 @@ const App = () => {
         </div>
     )
 }
+
+const App = () => {
+    return (
+        <Routes>
+            <Route path="/" element={<AppContent />} />
+            <Route path="/it-manager" element={<ItManager />} />
+            <Route path="/treasure-hunt" element={<TreasureHunt />} />
+        </Routes>
+    )
+}
+
 export default App

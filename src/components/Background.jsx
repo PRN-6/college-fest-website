@@ -140,7 +140,7 @@ const Background = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-[#FF0072] to-[#7B2CBF]"></div>
                     <div className="blob absolute w-[40%] h-[40%] rounded-full blur-[100px] opacity-60 bg-[#FF1CF7] left-[15%] top-[20%]"></div>
                     <div className="blob absolute w-[35%] h-[35%] rounded-full blur-[120px] opacity-40 bg-[#00F5FF] right-[20%] bottom-[25%]"></div>
-                    
+
                     {/* Stylized Triple X - Bottom Left */}
                     <div className="triple-x absolute top-[70%] left-[28%] md:top-[72%] md:left-[28%] flex gap-1 md:gap-3 opacity-90">
                         {['X', 'X', 'X'].map((x, i) => (
@@ -160,17 +160,17 @@ const Background = () => {
                     </div>
 
                     {/* Dotted Grid - Top Right */}
-                    <div className="absolute top-[18%] right-[18%] w-32 h-32 opacity-40 pointer-events-none" 
+                    <div className="absolute top-[18%] right-[18%] w-32 h-32 opacity-40 pointer-events-none"
                         style={{ backgroundImage: 'radial-gradient(circle, white 2px, transparent 2px)', backgroundSize: '16px 16px' }}>
                     </div>
 
                     {/* Dotted Grid - Bottom Right */}
-                    <div className="absolute top-[75%] right-[15%] w-48 h-16 opacity-40 pointer-events-none" 
+                    <div className="absolute top-[75%] right-[15%] w-48 h-16 opacity-40 pointer-events-none"
                         style={{ backgroundImage: 'radial-gradient(circle, white 3px, transparent 3px)', backgroundSize: '20px 20px' }}>
                     </div>
 
                     {/* Dotted Grid - Mid Left */}
-                    <div className="absolute top-[50%] left-[15%] w-24 h-48 opacity-40 pointer-events-none" 
+                    <div className="absolute top-[50%] left-[15%] w-24 h-48 opacity-40 pointer-events-none"
                         style={{ backgroundImage: 'radial-gradient(circle, white 2.5px, transparent 2.5px)', backgroundSize: '18px 18px' }}>
                     </div>
 
