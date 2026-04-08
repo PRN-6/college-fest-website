@@ -8,10 +8,10 @@ const Scene = () => {
   return (
     <Canvas
       shadows={!isMobile}
-      dpr={isMobile ? 1 : [1, 2]}
-      frameloop={isMobile ? 'demand' : 'always'}
+      dpr={isMobile ? [1, 1.5] : [1, 2]}
+      frameloop="always"
       gl={{
-        antialias: !isMobile,
+        antialias: true,
         powerPreference: 'high-performance',
         stencil: false,
         depth: true

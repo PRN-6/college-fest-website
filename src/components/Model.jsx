@@ -30,13 +30,10 @@ const Model = () => {
                 if (isMobile) {
                     child.castShadow = false
                     child.receiveShadow = false
-                    // Ultra-Core texture optimization
+                    // Balanced texture optimization - keeping mipmaps for quality
                     if (child.material.map) {
-                        child.material.map.minFilter = THREE.LinearFilter
-                        child.material.map.generateMipmaps = false
-                    }
-                    if (child.material) {
-                        child.material.precision = 'lowp'
+                        child.material.map.minFilter = THREE.LinearMipmapLinearFilter
+                        child.material.map.generateMipmaps = true
                     }
                 }
             }
@@ -152,10 +149,10 @@ const Model = () => {
                     trigger: document.body,
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 0.5, // Faster response on mobile
+                    scrub: 0.8, // Smoother damping on mobile
                     onEnter: () => { scrollStarted.current = true },
-                    onLeaveBack: () => { scrollStarted.current = false },
-                    onUpdate: () => { if (isMobile) invalidate() } // Force render on scroll
+                    onLeaveBack: () => { scrollStarted.current = false }
+                    // onUpdate handled by frameloop="always" in Scene.jsx
                 }
             })
 
@@ -183,10 +180,11 @@ const Model = () => {
 
     // Floating animation
     useFrame(() => {
-        if (group.current && !isMobile) {
+        if (group.current) {
             if (!scrollStarted.current) {
-                // Use GSAP Ticker instead of deprecated THREE.Clock
-                group.current.position.y = Math.sin(gsap.ticker.time * 1.5) * 0.2
+                // Gentle floating for both desktop and mobile
+                const amplitude = isMobile ? 0.1 : 0.2
+                group.current.position.y = Math.sin(gsap.ticker.time * 1.5) * amplitude
             }
         }
     })
