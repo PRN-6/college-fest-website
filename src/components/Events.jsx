@@ -92,8 +92,14 @@ const Events = () => {
                             onClick={() => {
                                 if (event.title === 'IT MANAGER') navigate('/it-manager')
                                 if (event.title === 'TREASURE HUNT') navigate('/treasure-hunt')
+                                if (event.title === 'SURPRISE EVENT') navigate('/surprise-event')
+                                if (event.title === 'WEB DESIGNING') navigate('/web-designing')
+                                if (event.title === 'HACKATHON') navigate('/hackathon')
+                                if (event.title === 'REEL MAKING') navigate('/reel-making')
+                                if (event.title === 'GAMING') navigate('/gaming')
+                                if (event.title === 'PRODUCT LAUNCH') navigate('/product-launch')
                             }}
-                            className={`backdrop-blur-none bg-zinc-900/90 md:backdrop-blur-xl md:bg-white/5 border-2 ${event.color} rounded-2xl p-6 md:p-8 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10 group ${(event.title === 'IT MANAGER' || event.title === 'TREASURE HUNT') ? 'cursor-pointer' : 'cursor-default'}`}
+                            className={`backdrop-blur-none bg-zinc-900/90 md:backdrop-blur-xl md:bg-white/5 border-2 ${event.color} rounded-2xl p-6 md:p-8 shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-white/10 group ${(event.title === 'IT MANAGER' || event.title === 'TREASURE HUNT' || event.title === 'SURPRISE EVENT' || event.title === 'WEB DESIGNING' || event.title === 'HACKATHON') ? 'cursor-pointer' : 'cursor-default'}`}
                         >
                             <div className="flex justify-between items-start mb-6">
                                 <span className="text-[10px] md:text-xs font-black tracking-[0.3em] text-white/30 group-hover:text-white/60 transition-colors uppercase">{event.date}</span>
