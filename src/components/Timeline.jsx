@@ -113,7 +113,7 @@ const Timeline = () => {
       })
 
       // Hold (30% to 70% of the trigger duration)
-      tl.to({}, { duration: 0.4 })
+      tl.to({}, { duration: 0.3 })
 
       // Exit
       tl.to(headingRef.current, { y: -50, opacity: 0, duration: 0.3 }, 0.7)
@@ -142,34 +142,34 @@ const Timeline = () => {
         </div>
 
         {/* Boxes */}
-        <div className="flex flex-wrap justify-center gap-3 md:gap-4 max-w-full">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-full">
 
-          <div ref={daysRef} className="bg-zinc-900 border border-white/10 md:bg-gray-500/20 md:backdrop-blur-xl text-white rounded-2xl p-4 md:p-8 shadow-2xl min-w-[80px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
-            <div className="text-4xl md:text-6xl font-black text-center tracking-tighter">
+          <div ref={daysRef} className="bg-zinc-900 border border-white/10 md:bg-gray-500/20 md:backdrop-blur-xl text-white rounded-2xl p-3 md:p-8 shadow-2xl min-w-[70px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
+            <div className="text-3xl md:text-6xl font-black text-center tracking-tighter">
               {String(timeLeft.days).padStart(2, '0')}
             </div>
-            <div className="text-[10px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-40">DAYS</div>
+            <div className="text-[8px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-40 uppercase">DAYS</div>
           </div>
 
-          <div ref={hoursRef} className="bg-white text-black rounded-2xl p-4 md:p-8 shadow-2xl min-w-[80px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
-            <div className="text-4xl md:text-6xl font-black text-center tracking-tighter">
+          <div ref={hoursRef} className="bg-white text-black rounded-2xl p-3 md:p-8 shadow-2xl min-w-[70px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
+            <div className="text-3xl md:text-6xl font-black text-center tracking-tighter">
               {String(timeLeft.hours).padStart(2, '0')}
             </div>
-            <div className="text-[10px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-60">HOURS</div>
+            <div className="text-[8px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-60 uppercase">HOURS</div>
           </div>
 
-          <div ref={minutesRef} className="bg-zinc-900 border border-white/10 md:bg-gray-500/20 md:backdrop-blur-xl text-white rounded-2xl p-4 md:p-8 shadow-2xl min-w-[80px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
-            <div className="text-4xl md:text-6xl font-black text-center tracking-tighter">
+          <div ref={minutesRef} className="bg-zinc-900 border border-white/10 md:bg-gray-500/20 md:backdrop-blur-xl text-white rounded-2xl p-3 md:p-8 shadow-2xl min-w-[70px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
+            <div className="text-3xl md:text-6xl font-black text-center tracking-tighter">
               {String(timeLeft.minutes).padStart(2, '0')}
             </div>
-            <div className="text-[10px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-40">MINS</div>
+            <div className="text-[8px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-40 uppercase">MINS</div>
           </div>
 
-          <div ref={secondsRef} className="bg-white text-black rounded-2xl p-4 md:p-8 shadow-2xl min-w-[80px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
-            <div className="text-4xl md:text-6xl font-black text-center tracking-tighter">
+          <div ref={secondsRef} className="bg-white text-black rounded-2xl p-3 md:p-8 shadow-2xl min-w-[70px] md:min-w-[140px]" style={{ opacity: 0, willChange: isMobile ? 'transform, opacity' : 'auto' }}>
+            <div className="text-3xl md:text-6xl font-black text-center tracking-tighter">
               {String(timeLeft.seconds).padStart(2, '0')}
             </div>
-            <div className="text-[10px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-60">SECS</div>
+            <div className="text-[8px] md:text-xl font-mono tracking-widest text-center mt-2 opacity-60 uppercase">SECS</div>
           </div>
 
         </div>

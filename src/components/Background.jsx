@@ -95,17 +95,18 @@ const Background = () => {
         const onTick = () => {
             if (!contentRef.current) return
 
+            const elapsed = gsap.ticker.time;
+            const scrollY = window.scrollY;
+
             if (!isMobile) {
-                // High-performance rotation only for desktop
-                const elapsed = gsap.ticker.time;
-                const scrollY = window.scrollY;
+                // High-performance rotation for desktop
                 const totalRotation = (elapsed * 1.5 * 10) + (scrollY * 0.05)
                 const scale = 1.2 + (scrollY * 0.0005)
                 contentRef.current.style.transform = `rotate(${totalRotation}deg) scale(${scale})`
             } else {
-                // Static but responsive for mobile (No rotation loop)
-                const scrollY = window.scrollY;
-                contentRef.current.style.transform = `translateY(${scrollY * -0.05}px) scale(1.1)`
+                // Smooth rotation + parallax for mobile
+                const totalRotation = (elapsed * 0.2 * 10) + (scrollY * 0.02)
+                contentRef.current.style.transform = `translateY(${scrollY * -0.05}px) rotate(${totalRotation}deg) scale(1.1)`
             }
         }
 
