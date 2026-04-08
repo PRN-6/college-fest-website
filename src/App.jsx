@@ -2,6 +2,10 @@ import React, { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import ItManager from './pages/events/ItManager'
 import TreasureHunt from './pages/events/TreasureHunt'
+import SurpriseEvent from './pages/events/SurpriseEvent'
+import WebDesigning from './pages/events/WebDesigning'
+import Hackathon from './pages/events/Hackathon'
+import ReelMaking from './pages/events/ReelMaking'
 import Scene from './components/Scene'
 import Background from './components/Background'
 import Header from './components/Header'
@@ -52,6 +56,10 @@ const App = () => {
             <Route path="/" element={<AppContent />} />
             <Route path="/it-manager" element={<ItManager />} />
             <Route path="/treasure-hunt" element={<TreasureHunt />} />
+            <Route path="/surprise-event" element={<SurpriseEvent />} />
+            <Route path="/web-designing" element={<WebDesigning />} />
+            <Route path="/hackathon" element={<Hackathon />} />
+            <Route path="/reel-making" element={<ReelMaking />} />
         </Routes>
     )
 }

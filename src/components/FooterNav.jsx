@@ -28,7 +28,7 @@ const FooterNav = () => {
 
 
       {/* Copyright text (Center on bigger screens) */}
-      <div className="hidden md:block flex-1 text-center whitespace-nowrap">
+      <div className="hidden md:block flex text-center whitespace-nowrap">
         CODE THE FUTURE
       </div>
 
