@@ -182,10 +182,11 @@ const Model = () => {
     }, [actions, camera, isMobile])
 
     // Floating animation
-    useFrame((state) => {
+    useFrame(() => {
         if (group.current && !isMobile) {
             if (!scrollStarted.current) {
-                group.current.position.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.2
+                // Use GSAP Ticker instead of deprecated THREE.Clock
+                group.current.position.y = Math.sin(gsap.ticker.time * 1.5) * 0.2
             }
         }
     })
