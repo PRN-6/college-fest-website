@@ -6,7 +6,11 @@ import SurpriseEvent from './pages/events/SurpriseEvent'
 import WebDesigning from './pages/events/WebDesigning'
 import Hackathon from './pages/events/Hackathon'
 import ReelMaking from './pages/events/ReelMaking'
+import Gaming from './pages/events/Gaming'
+import ProductLaunch from './pages/events/ProductLaunch'
 import Scene from './components/Scene'
+import About from './pages/About'
+import Team from './pages/Team'
 import Background from './components/Background'
 import Header from './components/Header'
 import Timeline from './components/Timeline'
@@ -60,6 +64,10 @@ const App = () => {
             <Route path="/web-designing" element={<WebDesigning />} />
             <Route path="/hackathon" element={<Hackathon />} />
             <Route path="/reel-making" element={<ReelMaking />} />
+            <Route path="/gaming" element={<Gaming />} />
+            <Route path="/product-launch" element={<ProductLaunch />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/team" element={<Team />} />
         </Routes>
     )
 }
